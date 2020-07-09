@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+
 import './App.css';
 import Person from "./Person/Person";
+
+const StyledButton = styled.button`
+  background-color: ${props => props.alt ? 'red' : 'green'};
+  color: white;
+  font: inherit;
+  border: 1px solid blue;
+  padding: 8px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: ${props => props.alt ? 'salmon' : 'lightgreen'};
+    color: black;
+  }
+`;
 
 class App extends Component {
   state = {
     persons: [
       { id: '0', name: 'Rainer', age: 39 },
       { id: '1', name: 'Thiago', age: 5 },
-      { id:'2', name: 'Yeni', age: 35 }
+      { id: '2', name: 'Yeni', age: 35 }
     ],
     otherState: 'some other value',
     username: 'raileomor',
@@ -16,7 +32,7 @@ class App extends Component {
 
   changeNameHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => p.id === id);
-    const person = {...this.state.persons[personIndex]};
+    const person = { ...this.state.persons[personIndex] };
     person.name = event.target.value;
 
     const persons = [...this.state.persons];
@@ -42,28 +58,20 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    }
-
     let persons = null;
 
     if (this.state.showPersons) {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-              return <Person
-                click={() => this.deletePersonHandler(index)}
-                name={person.name}
-                age={person.age}
-                key={person.id}
-                changed={(event) => this.changeNameHandler(event, person.id)}>Delete</Person>
+            return <Person
+              click={() => this.deletePersonHandler(index)}
+              name={person.name}
+              age={person.age}
+              key={person.id}
+              changed={(event) => this.changeNameHandler(event, person.id)}>Delete</Person>
           })}
-        </div>  
+        </div>
       );
     }
 
@@ -71,10 +79,10 @@ class App extends Component {
       <div className="App">
         <h1>Hy, I'm a React App</h1>
         <p>This is really working!</p>
-        <button 
-          style={ style }
-          onClick={this.togglePersonsHandler}>Switch values</button>
-        { persons }
+        <StyledButton
+          alt={this.state.showPersons}
+          onClick={this.togglePersonsHandler}>Switch values</StyledButton>
+        {persons}
       </div>
     );
   }
